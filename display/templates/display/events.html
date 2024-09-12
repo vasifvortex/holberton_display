@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display</title>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        #events-container {
+            margin-top: 40px;
+            padding: 10px;
+        }
+        .event {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .event h2, .event p {
+            font-weight: 700;
+            text-align: center;
+        } 
+       
+        .event p {
+            
+            color: #292728;}
+        .event h2{
+           
+            color: #e0003c;
+        }
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            height: 70px;
+        }
+        
+        #i1{
+            width: 3000px;
+            height: 3000px;
+            max-width: 100%;
+            max-height:100%;
+            position: fixed;
+        }
+        .event,.picture{display: none;}
+        .event.active, .picture.active { display: block; }
+    </style>
+</head>
+<body>
+    <div id="events-container" class="event">
+        {% for event in events %}
+        <div style="margin: 3%;">
+            <img src="{% static 'display/logo.png' %}" alt="logo" class="center"/>
+            <h2>{{ event.title }}</h2>
+            <p>{{ event.date }} at {{ event.time }}</p>
+            <p>{{ event.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="picture" >
+        
+        {% if uploaded_image %}
+        
+        <img src="{{ uploaded_image.image.url }}" alt="Uploaded Picture"  id="i1"/>
+        {% endif %}
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.event, .picture');
+
+        function showSlide(slideIndex) {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === slideIndex);
+            });
+        }
+
+        setInterval(() => {
+           currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }, 10000);
+    </script>
+</body>
+</html>
